@@ -3,9 +3,28 @@
 {% block title %}All rooms{% endblock %}
 
 {% block body %}
-    {{ dump(rooms) }}
+    {#    {{ dump(rooms) }}#}
 
-    {% for room in rooms %}
-        {{ room.id }}
-    {% endfor %}
+    <table>
+        <thead>
+        <tr>
+            <th>#</th>
+            <th>Résumé</th>
+            <th>Prix</th>
+            <th>&nbsp;</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for room in rooms %}
+            <tr>
+                <td>{{ room.id }}</td>
+                <td>{{ room.summary }}</td>
+                <td>{{ room.price }}</td>
+                <td><a href="{{ path('room_show', {id: room.id}) }}">Afficher</a></td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('room_new') }}">Créer</a>
 {% endblock %}
