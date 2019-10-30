@@ -1,0 +1,17 @@
+bootstrap_menu:
+  menus:
+    main:
+      items:
+        home:
+          label: 'Accueil'
+          route: 'region_index'
+        room:
+          label: 'Chambres'
+          items:
+            index:
+              label: 'Toutes'
+              route: 'room_index'
+            new:
+              label: 'Nouvelle'
+              route: 'room_new'
+          
