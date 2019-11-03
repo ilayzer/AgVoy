@@ -1,5 +1,6 @@
 bootstrap_menu:
   menus:
+
     main:
       items:
         home:
@@ -9,9 +10,35 @@ bootstrap_menu:
           label: 'Chambres'
           items:
             index:
-              label: 'Toutes'
+              label: 'Liste des chambres'
               route: 'room_index'
             new:
-              label: 'Nouvelle'
+              label: 'Créer une nouvelle chambre'
               route: 'room_new'
-          
+        region:
+          label: 'Régions'
+          route: 'region_index'
+        owner:
+          label: 'Propriétaires'
+          route: 'owner_index'
+
+    anonymousaccount:
+      items:
+        account:
+          label: 'Compte'
+          items:
+            login:
+              label: "S'identifier"
+              route: 'app_login'
+            register:
+              label: 'Créer un compte'
+              route: 'app_register'
+      #            register:
+      #              label: 'Register'
+      #              route: 'app_register'
+    account:
+      items:
+        account:
+          label: 'Se déconnecter'
+          route: 'app_logout'
+          roles: [ 'ROLE_USER' ]

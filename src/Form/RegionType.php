@@ -20,6 +20,7 @@ class RegionType extends AbstractType
             ->add('presentation', TextareaType::class)
             ->add('country', TextType::class)
             ->add('rooms', EntityType::class, [
+                'required' => false,
                 'class' => Room::class,
                 'choice_label' => 'summary',
                 'multiple' => true,
