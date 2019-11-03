@@ -3,11 +3,12 @@ bootstrap_menu:
 
     main:
       items:
-        home:
-          label: 'Accueil'
-          route: 'region_index'
+        #        home:
+        #          label: 'Accueil'
+        #          route: 'region_index'
         room:
           label: 'Chambres'
+          roles: [ 'ROLE_ADMIN' ]
           items:
             index:
               label: 'Liste des chambres'
@@ -18,9 +19,11 @@ bootstrap_menu:
         region:
           label: 'Régions'
           route: 'region_index'
+          roles: [ 'ROLE_ADMIN' ]
         owner:
           label: 'Propriétaires'
           route: 'owner_index'
+          roles: [ 'ROLE_ADMIN' ]
 
     anonymousaccount:
       items:
