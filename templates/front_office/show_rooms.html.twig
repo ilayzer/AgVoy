@@ -5,6 +5,18 @@
 {% block body %}
     <h1>Room</h1>
 
+    {% if room.unavailabilities|length > 0 %}
+        <p>Cette chambre est indisponible aux périodes suivantes :</p>
+        <ul>
+            {% for unavailability in room.unavailabilities|filter(unavailability => unavailability.endingOn > date()) %}
+                <li>{{ unavailability.startingOn|date('d/m/Y') }} - {{ unavailability.endingOn|date('d/m/Y') }}</li>
+            {% endfor %}
+            {% for booking in room.bookings|filter(booking => booking.endingOn > date())|filter(booking => booking.confirmed) %}
+                <li>{{ booking.startingOn|date('d/m/Y') }} - {{ booking.endingOn|date('d/m/Y') }}</li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+
     <table class="table">
         <tbody>
         <tr>
@@ -35,10 +47,47 @@
             <th>Address</th>
             <td>{{ room.address }}</td>
         </tr>
+        <tr>
+            <th>Image</th>
+            <td>
+                {% if room.imageName %}
+                    <img alt="image téléchargée" src="{{ vich_uploader_asset(room, 'imageFile') }}"
+                         style="max-width: 100%">
+                {% else %}
+                    Aucune image disponible
+                {% endif %}
+            </td>
+        </tr>
+        <tr>
+            <th>Commentaires</th>
+            <td>
+                {% for comment in room.comments if comment.accepted %}
+                    {{ comment.content }}<br/>
+                {% else %}
+                    Pas de commentaires
+                {% endfor %}
+            </td>
+        </tr>
         </tbody>
     </table>
 
-    <a href="{{ path('bookmark', {'id': room.id, route:"rooms_show", routeParams:{id:room.id}}) }}">marque-page</a>
+    <div>
+        <a href="{{ path('bookmark', {'id': room.id, route:"rooms_show", routeParams:{id:room.id}}) }}">marque-page</a>
+    </div>
+    {% if app.user %}
+        {% set booked_rooms = '' %}
+        {% for booking in app.user.client.bookings|filter(booking => booking.endingOn > date()) %}
+            {% set booked_rooms = booked_rooms ~ ',' ~ booking.room.id %}
+        {% endfor %}
+        {% if room.id not in booked_rooms|split(',') %}
+            <div>
+                <a href="{{ path('booking', {'id': room.id}) }}">réserver</a>
+            </div>
+        {% endif %}
+    {% else %}
+        <div>
+            <a href="{{ path('booking', {'id': room.id}) }}">réserver</a>
+        </div>
+    {% endif %}
 
-    {{ include('back_office/room/_delete_form.html.twig') }}
 {% endblock %}

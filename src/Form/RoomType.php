@@ -13,6 +13,8 @@ use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Vich\UploaderBundle\Form\Type\VichImageType;
+
 
 class RoomType extends AbstractType
 {
@@ -34,7 +36,9 @@ class RoomType extends AbstractType
             ->add('owner', EntityType::class, [
                 'class' => Owner::class,
                 'choice_label' => 'familyName',
-            ]);
+            ])
+            ->add('imageName', TextType::class, ['disabled' => true])
+            ->add('imageFile', VichImageType::class, ['required' => false]);
     }
 
     public function configureOptions(OptionsResolver $resolver)

@@ -6,6 +6,7 @@ use Exception;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Core\Exception\UsernameNotFoundException;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 
 class SecurityController extends AbstractController
@@ -33,5 +34,20 @@ class SecurityController extends AbstractController
     public function logout()
     {
         throw new Exception('This method can be blank - it will be intercepted by the logout key on your firewall');
+    }
+
+
+    /**
+     * @Route("/redirect", name="redirect")
+     */
+    public function redirection()
+    {
+        // Check if a user is authenticated
+        if (!$this->getUser()) throw new UsernameNotFoundException();
+
+        if (in_array('ROLE_OWNER', (array)$this->getUser()->getRoles()))
+            return $this->redirectToRoute('owner');
+        else
+            return $this->redirectToRoute('index');
     }
 }

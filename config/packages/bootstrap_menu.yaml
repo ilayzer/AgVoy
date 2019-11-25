@@ -8,22 +8,31 @@ bootstrap_menu:
         #          route: 'region_index'
         room:
           label: 'Chambres'
-          roles: [ 'ROLE_ADMIN' ]
-          items:
-            index:
-              label: 'Liste des chambres'
-              route: 'room_index'
-            new:
-              label: 'Créer une nouvelle chambre'
-              route: 'room_new'
+          route: 'room_index'
         region:
           label: 'Régions'
           route: 'region_index'
-          roles: [ 'ROLE_ADMIN' ]
         owner:
           label: 'Propriétaires'
           route: 'owner_index'
-          roles: [ 'ROLE_ADMIN' ]
+
+    user:
+      items:
+        favoris:
+          label: 'Favoris'
+          route: 'favoris'
+          roles: ['ROLE_CLIENT']
+        bookings:
+          label: 'Réservations'
+          route: 'bookings'
+          roles: ['ROLE_CLIENT']
+
+
+    anonymous:
+      items:
+        favoris:
+          label: 'Favoris'
+          route: 'favoris'
 
     anonymousaccount:
       items:
@@ -36,6 +45,7 @@ bootstrap_menu:
             register:
               label: 'Créer un compte'
               route: 'app_register'
+
       #            register:
       #              label: 'Register'
       #              route: 'app_register'

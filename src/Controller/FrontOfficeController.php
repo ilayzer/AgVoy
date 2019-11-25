@@ -2,8 +2,10 @@
 
 namespace App\Controller;
 
+use App\Entity\Booking;
 use App\Entity\Region;
 use App\Entity\Room;
+use App\Form\BookingType;
 use App\Repository\RegionRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -104,14 +106,63 @@ class FrontOfficeController extends AbstractController
     public function favoris(): Response
     {
         $likes = $this->get('session')->get('likes');
+        if (!$likes) {
+            $likes = [];
+        }
         $rooms = array();
         foreach ($likes as $id) {
             $room = $this->getDoctrine()->getRepository(Room::class)->find($id);
-            $rooms[] = $room;
+            if ($room) {
+                $rooms[] = $room;
+            }
         }
 
         return $this->render('front_office/favoris.html.twig', [
             'rooms' => $rooms,
         ]);
     }
+
+
+    /**
+     * @Route("/rooms/{id}/booking", name="booking", methods={"GET", "POST"})
+     * @param Room $room
+     * @param Request $request
+     * @return Response
+     */
+    public function reservation(Room $room, Request $request): Response
+    {
+        $booking = new Booking();
+        $form = $this->createForm(BookingType::class, $booking);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $booking->setClient($this->getUser()->getClient());
+            $booking->setRoom($room);
+            $price = $room->getPrice() * $booking->getEndingOn()->diff($booking->getStartingOn())->format('%a');
+            $booking->setPrice($price);
+            $entityManager = $this->getDoctrine()->getManager();
+            $entityManager->persist($booking);
+            $entityManager->flush();
+
+            $this->get('session')->getFlashBag()->add('message', "La réservation a été effectuée");
+            return $this->redirectToRoute('rooms_show', ['id' => $room->getId()]);
+        }
+
+        return $this->render('front_office/booking.html.twig', [
+            'form' => $form->createView(),
+        ]);
+    }
+
+    /**
+     * @Route("/booking", name="bookings", methods={"GET"})
+     * @return Response
+     */
+    public function booking(): Response
+    {
+        $bookings = $this->getUser()->getClient()->getBookings();
+        return $this->render('front_office/show_booking_rooms.html.twig', [
+            'bookings' => $bookings,
+        ]);
+    }
+
 }

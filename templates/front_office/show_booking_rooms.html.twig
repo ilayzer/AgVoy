@@ -1,0 +1,41 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Room index{% endblock %}
+
+{% block body %}
+    <h1>Mes réservations</h1>
+
+    <table class="table">
+        <thead>
+        <tr>
+            <th>Résumé de la chambre</th>
+            <th>Adresse</th>
+            <th>Date d'arrivée</th>
+            <th>Date de départ</th>
+            <th>Etat</th>
+            <th>Prix</th>
+            <th>Action</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for booking in bookings %}
+            <tr>
+                <td>{{ booking.room.summary }}</td>
+                <td>{{ booking.room.address }}</td>
+                <td>{{ booking.startingOn|date('d/m/Y') }}</td>
+                <td>{{ booking.endingOn|date('d/m/Y') }}</td>
+                <td>{{ booking.confirmed ? 'Confirmé' : 'En attente' }}</td>
+                <td>{{ booking.price }}</td>
+                <td>
+                    <a href="{{ path('rooms_show',  {'id': booking.room.id}) }}">voir la chambre</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="8">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+{% endblock %}

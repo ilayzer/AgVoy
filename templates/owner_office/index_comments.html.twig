@@ -1,0 +1,34 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+
+{% endblock %}
+
+{% block body %}
+    <table class="table">
+        <thead>
+        <tr>
+            <th>Id</th>
+            <th>Résumé</th>
+            <th>Content</th>
+            <th>actions</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for room in app.user.owner.rooms %}
+            {% for comment in room.comments if not comment.accepted %}
+                <tr>
+                    <td>{{ comment.id }}</td>
+                    <td>{{ room.summary }}</td>
+                    <td>{{ comment.content }}</td>
+                    <td>
+                        <a href="{{ path('accept_comment', {id: comment.id}) }}">Accepter</a>
+                        <a href="{{ path('delete_comment', {'id': comment.id}) }}">Supprimer</a>
+                    </td>
+                </tr>
+            {% endfor %}
+        {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}
+

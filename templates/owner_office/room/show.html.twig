@@ -36,22 +36,19 @@
             <td>{{ room.address }}</td>
         </tr>
         <tr>
-            <th>Image</th>
-            <td>
-                {% if room.imageName %}
-                    <img alt="image téléchargée" src="{{ vich_uploader_asset(room, 'imageFile') }}"
-                         style="max-width: 100%">
-                {% else %}
-                    Aucune image disponible
-                {% endif %}
-            </td>
+            <th>ImageName</th>
+            <td>{{ room.imageName }}</td>
+        </tr>
+        <tr>
+            <th>ContentType</th>
+            <td>{{ room.contentType }}</td>
         </tr>
         </tbody>
     </table>
 
-    <a href="{{ path('room_index') }}">back to list</a>
+    <a href="{{ path('room_owner_index') }}">back to list</a>
 
-    <a href="{{ path('room_edit', {'id': room.id}) }}">edit</a>
+    <a href="{{ path('room_owner_edit', {'id': room.id}) }}">edit</a>
 
-    {{ include('back_office/room/_delete_form.html.twig') }}
+    {{ include('owner_office/room/_delete_form.html.twig') }}
 {% endblock %}

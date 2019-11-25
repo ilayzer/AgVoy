@@ -1,0 +1,18 @@
+{% extends 'base.html.twig' %}
+{% block title %}Nouvele réservation{% endblock %}
+
+{% block body %}
+    <div class="d-flex justify-content-center pt-3">
+        <div>
+            <h1 class="h3">Réservez votre séjour</h1>
+            {{ form_start(form) }}
+            {{ form_widget(form) }}
+            <div class="form-group">
+                <button class="btn btn-success" type="submit">Réserver</button>
+            </div>
+            {{ form_end(form) }}
+        </div>
+    </div>
+{% endblock %}
+
+

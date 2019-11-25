@@ -1,0 +1,18 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <div>
+        <a href="{{ path('room_owner_index') }}">Mes chambres</a>
+    </div>
+    <div>
+        <a href="{{ path('booking_owner_index') }}">Réservation à valider</a>
+    </div>
+    <div>
+        <a href="{{ path('comment_owner_index') }}">Commentaires à modérer</a>
+    </div>
+{% endblock %}
+
+{% block title %}
+
+{% endblock %}
+

@@ -15,11 +15,13 @@
             <th>Superficy</th>
             <th>Price</th>
             <th>Address</th>
-            <th>Actions</th>
+            <th>ImageName</th>
+            <th>ContentType</th>
+            <th>actions</th>
         </tr>
         </thead>
         <tbody>
-        {% for room in region.rooms %}
+        {% for room in rooms %}
             <tr>
                 <td>{{ room.id }}</td>
                 <td>{{ room.summary }}</td>
@@ -28,17 +30,20 @@
                 <td>{{ room.superficy }}</td>
                 <td>{{ room.price }}</td>
                 <td>{{ room.address }}</td>
+                <td>{{ room.imageName }}</td>
+                <td>{{ room.contentType }}</td>
                 <td>
-                    <a href="{{ path('rooms_show',  {'id': room.id}) }}">voir la chambre</a>
+                    <a href="{{ path('room_owner_show', {'id': room.id}) }}">show</a>
+                    <a href="{{ path('room_owner_edit', {'id': room.id}) }}">edit</a>
                 </td>
             </tr>
-
         {% else %}
             <tr>
-                <td colspan="8">no records found</td>
+                <td colspan="11">no records found</td>
             </tr>
         {% endfor %}
         </tbody>
     </table>
 
+    <a href="{{ path('room_owner_new') }}">Create new</a>
 {% endblock %}

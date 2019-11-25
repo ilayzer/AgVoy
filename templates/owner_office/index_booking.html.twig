@@ -1,0 +1,36 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+
+{% endblock %}
+
+{% block body %}
+    <table class="table">
+        <thead>
+        <tr>
+            <th>Id</th>
+            <th>Résumé</th>
+            <th>Date d'arrivée</th>
+            <th>Date de départ</th>
+            <th>actions</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for room in app.user.owner.rooms %}
+            {% for booking in room.bookings if not booking.confirmed %}
+                <tr>
+                    <td>{{ booking.id }}</td>
+                    <td>{{ room.summary }}</td>
+                    <td>{{ booking.startingOn|date("d/m/Y") }}</td>
+                    <td>{{ booking.endingOn|date("d/m/Y") }}</td>
+                    <td>
+                        <a href="{{ path('accept_booking', {id: booking.id}) }}">Confirmer</a>
+                        <a href="{{ path('delete_booking', {'id': booking.id}) }}">Supprimer</a>
+                    </td>
+                </tr>
+            {% endfor %}
+        {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}
+

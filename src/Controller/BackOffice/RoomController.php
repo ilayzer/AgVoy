@@ -27,6 +27,8 @@ class RoomController extends AbstractController
 
     /**
      * @Route("/new", name="room_new", methods={"GET","POST"})
+     * @param Request $request
+     * @return Response
      */
     public function new(Request $request): Response
     {
@@ -35,6 +37,13 @@ class RoomController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            // Change conte-type according to image's
+            $imagefile = $room->getImageFile();
+            if ($imagefile) {
+                $mimetype = $imagefile->getMimeType();
+                $room->setContentType($mimetype);
+            }
+
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($room);
             $entityManager->flush();
@@ -44,7 +53,6 @@ class RoomController extends AbstractController
         }
 
         return $this->render('back_office/room/new.html.twig', [
-            'room' => $room,
             'form' => $form->createView(),
         ]);
     }
